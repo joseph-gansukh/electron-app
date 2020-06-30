@@ -3,26 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>LFC PO Label Printer</title>
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <h1>LFC PO Label Generator</h1>
-    <form>
-        <input type="file" name="file" id="file" accept=".csv" onchange="handleFiles(this.files)">
-    </form>
+    <h1 class="no-print" style="margin-left: 20px">LFC PO Label Printer</h1>
+    <div class='main-form'>
+        <form class="no-print">
+            <input type="file" name="file" id="file" accept=".csv" onchange="handleFiles(this.files)">
+        </form>
+        <button id="current" class="no-print">Print</button>
+    </div>
 
     <div id="main"></div>
-    <img id="barcode" />
 
     <script>
         const parse = require('csv-parse')
         const moment = require('moment')
         const JsBarcode = require('jsbarcode');
-        // const {
-        //     createCanvas
-        // } = require("canvas");
+        const electron = require('electron')
+            // Importing BrowserWindow from Main 
+        const BrowserWindow = electron.remote.BrowserWindow;
         const form = document.querySelector('form')
 
         function handleFiles(files) {
@@ -94,10 +96,12 @@
             console.log('productsOjb: ', productsOjb);
             console.log('productsObjList: ', productsObjList);
 
+
             const mainContainerDiv = document.querySelector('#main')
             productsObjList.map(product => {
 
                 const productDiv = document.createElement('div')
+                productDiv.className = 'productDiv'
 
                 const nameH2 = document.createElement('h2')
                 nameH2.innerText = product.name
@@ -124,6 +128,36 @@
 
             })
         }
+
+        var current = document.getElementById('current');
+        var options = {
+            silent: false,
+            printBackground: true,
+            color: false,
+            margin: {
+                marginType: 'printableArea'
+            },
+            landscape: false,
+            pagesPerSheet: 1,
+            collate: false,
+            copies: 1,
+            header: 'Header of the Page',
+            footer: 'Footer of the Page'
+        }
+
+        current.addEventListener('click', (event) => {
+            let win = BrowserWindow.getFocusedWindow();
+            // let win = BrowserWindow.getAllWindows()[0];
+
+            const mainContainerDiv = document.querySelector('#main')
+
+
+            win.webContents.print(options, (success, failureReason) => {
+                if (!success) console.log(failureReason);
+
+                console.log('Print Initiated');
+            });
+        });
 
         function errorHandler(evt) {
             if (evt.target.error.name == "NotReadableError") {
