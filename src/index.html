@@ -13,15 +13,16 @@
         <input type="file" name="file" id="file" accept=".csv" onchange="handleFiles(this.files)">
     </form>
 
-    <svg class='barcode'></svg>
+    <div id="main"></div>
+    <img id="barcode" />
 
     <script>
         const parse = require('csv-parse')
         const moment = require('moment')
         const JsBarcode = require('jsbarcode');
-        const {
-            createCanvas
-        } = require("canvas");
+        // const {
+        //     createCanvas
+        // } = require("canvas");
         const form = document.querySelector('form')
 
         function handleFiles(files) {
@@ -93,20 +94,40 @@
             console.log('productsOjb: ', productsOjb);
             console.log('productsObjList: ', productsObjList);
 
-            const body = document.querySelector('body')
+            const mainContainerDiv = document.querySelector('#main')
             productsObjList.map(product => {
 
-                const barcodeText = JsBarcode("#barcode", `${product.barcode}`, {
-                    format: "CODE39",
-                    mod43: true
-                });
+                const productDiv = document.createElement('div')
+
+                const nameH2 = document.createElement('h2')
+                nameH2.innerText = product.name
+
+                const date = document.createElement('p')
+                date.innerHTML = product.date
+
+                const barcode = document.createElement('img')
+                JsBarcode(barcode, `${product.barcode}`);
+
+
+                productDiv.appendChild(nameH2)
+                productDiv.appendChild(date)
+                productDiv.appendChild(barcode)
+
+                mainContainerDiv.appendChild(productDiv)
+
+                // const barcodeText = JsBarcode("#barcode", `${product.barcode}`, {
+                //     format: "CODE39",
+                //     mod43: true
+                // });
+                // var element = document.getElementById("barcode");
+                // JsBarcode(element, `${product.barcode}`);
 
             })
         }
 
         function errorHandler(evt) {
             if (evt.target.error.name == "NotReadableError") {
-                alert("Canno't read file !");
+                alert("Cannot read file !");
             }
         }
     </script>
