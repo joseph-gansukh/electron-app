@@ -110,8 +110,12 @@
                 date.innerHTML = product.date
 
                 const barcode = document.createElement('img')
-                JsBarcode(barcode, `${product.barcode}`);
+                JsBarcode(barcode, `${product.barcode}`, {
+                    fontSize: 30,
+                    font: "bold"
+                });
 
+                console.log('TESTING')
 
                 productDiv.appendChild(nameH2)
                 productDiv.appendChild(date)
