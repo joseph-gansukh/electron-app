@@ -65,18 +65,21 @@
             }
 
             const flatCsvLines = lines.flat()
+            console.log('flatCsvLines: ', flatCsvLines);
 
             const nameIdx = 0
             const qtyIdx = flatCsvLines[0].indexOf("\"Qty\"")
+            console.log('qtyIdx: ', qtyIdx);
             const barcodeIdx = flatCsvLines[0].indexOf("\"Bar Code\"")
 
             const productsOjb = []
             const regex = /\"/g
             for (let i = 1; i < flatCsvLines.length; i++) {
                 if (flatCsvLines[i][barcodeIdx]) {
+                    console.log('qty: ', flatCsvLines[i][qtyIdx].replace(regex, ""))
                     productsOjb.push({
                         product: flatCsvLines[i - 1][nameIdx].replace(regex, '').split(" \(")[0],
-                        qty: parseInt(10, flatCsvLines[i][qtyIdx].replace(regex, '')),
+                        qty: flatCsvLines[i][qtyIdx].replace(regex, ''),
                         barcode: flatCsvLines[i][barcodeIdx].replace(regex, ''),
                         date: `Rcvd on: ${moment().format("MM/DD/YYYY")}`
                     })
@@ -85,6 +88,9 @@
 
             const productsObjList = []
             productsOjb.map(obj => {
+                console.log(obj.qty)
+                console.log(typeof(parseInt(obj.qty, 10)))
+                const qty = parseInt(obj.qty, 10)
                 for (let i = 0; i < obj.qty; i++) {
                     productsObjList.push({
                         name: obj.product,
