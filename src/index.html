@@ -115,15 +115,21 @@
                 const date = document.createElement('p')
                 date.innerHTML = product.date
 
+                const barcodeNumbers = document.createElement('p')
+                barcodeNumbers.innerHTML = product.barcode
+
                 const barcode = document.createElement('img')
                 JsBarcode(barcode, `${product.barcode}`, {
                     fontSize: 30,
-                    font: "bold"
+                    // font: "bold",
+                    height: 70,
+                    displayValue: false
                 });
 
                 console.log('TESTING')
 
                 productDiv.appendChild(nameH2)
+                productDiv.appendChild(barcodeNumbers)
                 productDiv.appendChild(date)
                 productDiv.appendChild(barcode)
 

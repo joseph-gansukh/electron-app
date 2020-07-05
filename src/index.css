@@ -24,8 +24,8 @@ p {
 }
 
 .productDiv img {
-    margin-top: 10px;
-    height: 100px;
+    /* margin-top: 10px; */
+    /* height: 100px; */
 }
 
 @media print {
