@@ -76,7 +76,7 @@
             const regex = /\"/g
             for (let i = 1; i < flatCsvLines.length; i++) {
                 if (flatCsvLines[i][barcodeIdx]) {
-                    console.log('qty: ', flatCsvLines[i][qtyIdx].replace(regex, ""))
+//                     console.log('qty: ', flatCsvLines[i][qtyIdx].replace(regex, ""))
                     productsOjb.push({
                         product: flatCsvLines[i - 1][nameIdx].replace(regex, '').split(" \(")[0],
                         qty: flatCsvLines[i][qtyIdx].replace(regex, ''),
@@ -99,8 +99,8 @@
                     })
                 }
             })
-            console.log('productsOjb: ', productsOjb);
-            console.log('productsObjList: ', productsObjList);
+//             console.log('productsOjb: ', productsOjb);
+//             console.log('productsObjList: ', productsObjList);
 
 
             const mainContainerDiv = document.querySelector('#main')
